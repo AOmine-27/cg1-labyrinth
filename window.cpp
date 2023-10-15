@@ -57,6 +57,7 @@ void Window::onCreate() {
 void Window::restart() {
   m_gameData.m_state = State::Playing;
   m_cube.create(m_cube_program);
+  m_wall.create(m_cube_program);
 }
 
 void Window::onUpdate() {
@@ -83,6 +84,7 @@ void Window::onPaint() {
   abcg::glViewport(0, 0, m_viewportSize.x, m_viewportSize.y);
 
   m_cube.paint(m_gameData);
+  m_wall.paint(m_gameData);
 }
 
 void Window::onPaintUI() {

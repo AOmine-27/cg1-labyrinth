@@ -5,6 +5,7 @@
 
 #include "abcgOpenGL.hpp"
 #include "cube.hpp"
+#include "wall.hpp"
 
 class Window : public abcg::OpenGLWindow {
 protected:
@@ -24,6 +25,7 @@ private:
   GameData m_gameData;
 
   Cube m_cube;
+  Wall m_wall;
 
   abcg::Timer m_restartWaitTimer;
 
