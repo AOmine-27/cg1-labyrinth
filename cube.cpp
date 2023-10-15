@@ -14,22 +14,32 @@ void Cube::create(GLuint program) {
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
 
   // Reset ship attributes
-  m_translation = glm::vec2(0);
+  m_translation = glm::vec2(-0.3, 0.5);
   m_velocity = glm::vec2(0);
 
   // clang-format off
-  std::array positions{
-      glm::vec2{0.0f, +1.0f}, glm::vec2{0.0f, 0.0f},
-      glm::vec2{+1.0f, +1.0f}, glm::vec2{+1.0f, 0.0f},
+  // m_cubeSidePoints = {
+  //     glm::vec2{0.0f, +1.0f}, 
+  //     glm::vec2{0.0f, 0.0f},
+  //     glm::vec2{+1.0f, +1.0f}, 
+  //     glm::vec2{+1.0f, 0.0f},
+  //     };
+
+  m_cubeSidePoints = {
+      glm::vec2{0.0f, +0.5f}, 
+      glm::vec2{0.5f, 0.0f},
+      glm::vec2{+1.0f, +0.5f}, 
+      glm::vec2{+0.5f, 1.0f},
       };
 
-  std::array const indices{ 0, 1, 2, 0, 2, 3, 1, 2, 3};
+  // std::array const indices{ 0, 1, 2, 0, 2, 3, 1, 2, 3};
+  std::array const indices{ 0, 1, 2, 0, 3, 2};
   // clang-format on
 
   // Generate VBO
   abcg::glGenBuffers(1, &m_VBO);
   abcg::glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-  abcg::glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions.data(),
+  abcg::glBufferData(GL_ARRAY_BUFFER, sizeof(m_cubeSidePoints), m_cubeSidePoints.data(),
                      GL_STATIC_DRAW);
   abcg::glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -89,13 +99,27 @@ void Cube::destroy() {
 void Cube::update(GameData const &gameData, float deltaTime) {
   
   // TODO: Check if hit borders/walls
+  if (gameData.m_collision == Collision::True) {
+    auto side = gameData.m_collisionSide;
 
-  if (gameData.m_input[gsl::narrow<size_t>(Input::Left)])
-    m_translation -= glm::vec2{0.2f, 0.0f} * deltaTime;
-  if (gameData.m_input[gsl::narrow<size_t>(Input::Right)])
-    m_translation += glm::vec2{0.2f, 0.0f} * deltaTime;
-  if (gameData.m_input[gsl::narrow<size_t>(Input::Up)])
-    m_translation += glm::vec2{0.0f, 0.2f} * deltaTime;
-  if (gameData.m_input[gsl::narrow<size_t>(Input::Down)])
-    m_translation -= glm::vec2{0.0f, 0.2f} * deltaTime;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Left)] && side != 0)
+      m_translation -= glm::vec2{0.2f, 0.0f} * deltaTime;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Right)]  && side != 2)
+      m_translation += glm::vec2{0.2f, 0.0f} * deltaTime;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Up)]  && side != 3)
+      m_translation += glm::vec2{0.0f, 0.2f} * deltaTime;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Down)]  && side != 1)
+      m_translation -= glm::vec2{0.0f, 0.2f} * deltaTime;
+
+  } else {
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Left)])
+      m_translation -= glm::vec2{0.2f, 0.0f} * deltaTime;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Right)])
+      m_translation += glm::vec2{0.2f, 0.0f} * deltaTime;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Up)])
+      m_translation += glm::vec2{0.0f, 0.2f} * deltaTime;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Down)])
+      m_translation -= glm::vec2{0.0f, 0.2f} * deltaTime;
+  }
+
 }

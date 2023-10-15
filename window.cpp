@@ -70,13 +70,13 @@ void Window::onUpdate() {
     return;
   }
 
-  m_cube.update(m_gameData, deltaTime);
 
 // TODO
-//   if (m_gameData.m_state == State::Playing) {
-//     checkCollisions();
-//     checkWinCondition();
-//   }
+  if (m_gameData.m_state == State::Playing) {
+    checkCollisions();
+    checkWinCondition();
+  }
+  m_cube.update(m_gameData, deltaTime);
 }
 
 void Window::onPaint() {
@@ -122,63 +122,52 @@ void Window::onDestroy() {
   // m_cube.destroy();
 }
 
-// TODO
-// void Window::checkCollisions() {
-//   // Check collision between ship and asteroids
-//   for (auto const &asteroid : m_asteroids.m_asteroids) {
-//     auto const asteroidTranslation{asteroid.m_translation};
-//     auto const distance{
-//         glm::distance(m_ship.m_translation, asteroidTranslation)};
+void Window::checkCollisions() {
+  for (int i = 0; i < m_cube.m_cubeSidePoints.size(); i++) {
+    auto cubeSidePoints = m_cube.m_cubeSidePoints[i];
 
-//     if (distance < m_ship.m_scale * 0.9f + asteroid.m_scale * 0.85f) {
-//       m_gameData.m_state = State::GameOver;
-//       m_restartWaitTimer.restart();
-//     }
-//   }
+    for (auto wall : m_wall.m_wallArrays) {
+      if(isPointInLine((wall*m_wall.m_scale), (cubeSidePoints*m_cube.m_scale + m_cube.m_translation))) {
+        m_gameData.m_collision = Collision::True;
+        m_gameData.m_collisionSide = i;
 
-//   // Check collision between bullets and asteroids
-//   for (auto &bullet : m_bullets.m_bullets) {
-//     if (bullet.m_dead)
-//       continue;
+        return;
+      }
+    }
+  }
+  m_gameData.m_collision = Collision::False;
+}
 
-//     for (auto &asteroid : m_asteroids.m_asteroids) {
-//       for (auto const i : {-2, 0, 2}) {
-//         for (auto const j : {-2, 0, 2}) {
-//           auto const asteroidTranslation{asteroid.m_translation +
-//                                          glm::vec2(i, j)};
-//           auto const distance{
-//               glm::distance(bullet.m_translation, asteroidTranslation)};
+bool Window::isPointInLine(glm::vec4 line, glm::vec2 point) { 
 
-//           if (distance < m_bullets.m_scale + asteroid.m_scale * 0.85f) {
-//             asteroid.m_hit = true;
-//             bullet.m_dead = true;
-//           }
-//         }
-//       }
-//     }
+  auto const distLineStartPoint {
+    sqrtf(powf((line.x - point.x),2.0) + powf((line.y - point.y),2.0))
+  };
 
-//     // Break asteroids marked as hit
-//     for (auto const &asteroid : m_asteroids.m_asteroids) {
-//       if (asteroid.m_hit && asteroid.m_scale > 0.10f) {
-//         std::uniform_real_distribution randomDist{-1.0f, 1.0f};
-//         std::generate_n(std::back_inserter(m_asteroids.m_asteroids), 3, [&]() {
-//           glm::vec2 const offset{randomDist(m_randomEngine),
-//                                  randomDist(m_randomEngine)};
-//           auto const newScale{asteroid.m_scale * 0.5f};
-//           return m_asteroids.makeAsteroid(
-//               asteroid.m_translation + offset * newScale, newScale);
-//         });
-//       }
-//     }
+  auto const distLineEndPoint {
+    sqrtf(powf((line.z - point.x),2.0) + powf((line.w - point.y),2.0))
+  };
 
-//     m_asteroids.m_asteroids.remove_if([](auto const &a) { return a.m_hit; });
-//   }
-// }
+  auto const lineLength {
+    sqrtf(powf((line.x - line.z),2.0) + powf((line.y - line.w),2.0))
+  };
+  auto const distanceDiff { (distLineStartPoint + distLineEndPoint) - lineLength};
 
-// void Window::checkWinCondition() {
-//   if (m_asteroids.m_asteroids.empty()) {
-//     m_gameData.m_state = State::Win;
-//     m_restartWaitTimer.restart();
-//   }
-// }
+  return distanceDiff < 0.000001; 
+}
+
+void Window::checkWinCondition() {
+  for (int i = 0; i < m_cube.m_cubeSidePoints.size(); i++) {
+    auto cubeSidePoints = m_cube.m_cubeSidePoints[i];
+
+    for (auto winningWall : m_wall.m_winningArea) {
+      if(isPointInLine((winningWall*m_wall.m_scale), (cubeSidePoints*m_cube.m_scale + m_cube.m_translation))) {
+          m_gameData.m_state = State::Finished;
+          m_restartWaitTimer.restart();
+
+        return;
+      }
+    }
+  }
+}
 

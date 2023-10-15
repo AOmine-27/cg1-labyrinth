@@ -18,103 +18,43 @@ void Wall::create(GLuint program) {
   m_velocity = glm::vec2(0);
 
   // clang-format off
-  std::array positions{
-    glm::vec2{0.0f, 0.33f}, 
-    glm::vec2{-0.33f, 0.33f},
-
-    glm::vec2{-0.33f, 0.33f},
-    glm::vec2{-0.33f, 0.0f},
-
-    glm::vec2{-0.33f, 0.0f},
-    glm::vec2{0.66f, 0.0f},
-
-    glm::vec2{0.66f, 0.0f},
-    glm::vec2{0.66f, 0.33f},
-
-    glm::vec2{0.66f, 0.33f},
-    glm::vec2{0.66f, 0.66f},
-
-    glm::vec2{0.66f, 0.33f},
-    glm::vec2{1.0f, 0.33f},
-
-    glm::vec2{1.0f, 0.33f},
-    glm::vec2{1.0f, 1.0f},
-
-    glm::vec2{1.0f, 1.0f},
-    glm::vec2{-0.33f, 1.0f},
-
-    glm::vec2{-0.33f, 1.0f},
-    glm::vec2{-0.33f, 0.66f},
-
-    glm::vec2{-0.33f, 0.66f},
-    glm::vec2{0.33f, 0.66f},
-
-    glm::vec2{0.33f, 0.66f},
-    glm::vec2{0.33f, 0.33f},
-
-    glm::vec2{-0.33f, 0.0f},
-    glm::vec2{-0.33f, -0.66f},
-
-    glm::vec2{-0.33f, -0.66f},
-    glm::vec2{-0.66f, -0.66f},
-
-    glm::vec2{-0.66f, -0.33f},
-    glm::vec2{-0.66f, -0.66f},
-
-    glm::vec2{0.66f, 0.0f},
-    glm::vec2{0.66f, -0.33f},
-
-    glm::vec2{0.66f, -0.33f},
-    glm::vec2{0.33f, -0.33f},
-
-    glm::vec2{-0.66f, 0.66f},
-    glm::vec2{-0.66f, 1.0f},
-
-    glm::vec2{-0.66f, 1.0f},
-    glm::vec2{-1.0f, 1.0f},
-
-    glm::vec2{-1.0f, 1.0f},
-    glm::vec2{-1.0f, 0.33f},
-
-    glm::vec2{-1.0f, 0.33f},
-    glm::vec2{-0.66f, 0.33f},
-
-    glm::vec2{-0.66f, 0.33f},
-    glm::vec2{-0.66f, 0.0f},
-
-    glm::vec2{-1.0f, 0.33f},
-    glm::vec2{-1.0f, -1.0f},
-
-    glm::vec2{-1.0f, -1.0f},
-    glm::vec2{0.0f, -1.0f},
-
-    glm::vec2{0.0f, -1.0f},
-    glm::vec2{0.0f, -0.33f},
-
-    glm::vec2{0.0f, -1.0f},
-    glm::vec2{0.33f, -1.0f},
-
-    glm::vec2{0.33f, -1.0f},
-    glm::vec2{0.33f, -0.66f},
-
-    glm::vec2{0.33f, -0.66f},
-    glm::vec2{0.66f, -0.66f},
-
-    glm::vec2{0.33f, -1.0f},
-    glm::vec2{1.0f, -1.0f},
-
-    glm::vec2{1.0f, -1.0f},
-    glm::vec2{1.0f, 0.0f},
-
-    };
-
-//   std::array const indices{0,1,1,2,2,3};
-  // clang-format on
+  m_wallArrays = {
+    glm::vec4{0.0f, 0.33f, -0.33f, 0.33f},
+    glm::vec4{-0.33f, 0.33f, -0.33f, 0.0f},
+    glm::vec4{ -0.33f, 0.0f,    0.66f, 0.0f},
+    glm::vec4{ 0.66f, 0.0f,    0.66f, 0.33f},
+    glm::vec4{ 0.66f, 0.33f,    0.66f, 0.66f},
+    glm::vec4{ 0.66f, 0.33f,    1.0f, 0.33f},
+    glm::vec4{ 1.0f, 0.33f,    1.0f, 1.0f},
+    glm::vec4{ 1.0f, 1.0f,    -0.33f, 1.0f},
+    glm::vec4{ -0.33f, 1.0f,    -0.33f, 0.66f},
+    glm::vec4{ -0.33f, 0.66f,    0.33f, 0.66f},
+    glm::vec4{ 0.33f, 0.66f,    0.33f, 0.33f},
+    glm::vec4{ -0.33f, 0.0f,    -0.33f, -0.66f},
+    glm::vec4{ -0.33f, -0.66f,    -0.66f, -0.66f},
+    glm::vec4{ -0.66f, -0.33f,    -0.66f, -0.66f},
+    glm::vec4{ 0.66f, 0.0f,    0.66f, -0.33f},
+    glm::vec4{ 0.66f, -0.33f,    0.33f, -0.33f},
+    glm::vec4{ -0.66f, 0.66f,    -0.66f, 1.0f},
+    glm::vec4{ -0.66f, 1.0f,    -1.0f, 1.0f},
+    glm::vec4{ -1.0f, 1.0f,    -1.0f, 0.33f},
+    glm::vec4{ -1.0f, 0.33f,    -0.66f, 0.33f},
+    glm::vec4{ -0.66f, 0.33f,    -0.66f, 0.0f},
+    glm::vec4{ -1.0f, 0.33f,    -1.0f, -1.0f},
+    glm::vec4{ -1.0f, -1.0f,    0.0f, -1.0f},
+    glm::vec4{ 0.0f, -1.0f,    0.0f, -0.33f},
+    glm::vec4{ 0.0f, -1.0f,    0.33f, -1.0f},
+    glm::vec4{ 0.33f, -1.0f,    0.33f, -0.66f},
+    glm::vec4{ 0.33f, -0.66f,    0.66f, -0.66f},
+    glm::vec4{ 0.33f, -1.0f,    1.0f, -1.0f},
+    glm::vec4{ 1.0f, -1.0f,    1.0f, 0.0f}, 
+  };
 
   // Generate VBO
+
   abcg::glGenBuffers(1, &m_VBO);
   abcg::glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-  abcg::glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions.data(),
+  abcg::glBufferData(GL_ARRAY_BUFFER, sizeof(m_wallArrays), m_wallArrays.data(),
                      GL_STATIC_DRAW);
   abcg::glBindBuffer(GL_ARRAY_BUFFER, 0);
 

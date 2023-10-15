@@ -14,9 +14,10 @@ public:
 
   glm::vec4 m_color{1};
   float m_rotation{};
-  float m_scale{0.125f};
+  float m_scale{0.1f};
   glm::vec2 m_translation{};
   glm::vec2 m_velocity{};
+  std::array<glm::vec2, 4> m_cubeSidePoints{};
 
 private:
   GLuint m_program{};

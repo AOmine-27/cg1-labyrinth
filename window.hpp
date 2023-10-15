@@ -34,8 +34,9 @@ private:
   std::default_random_engine m_randomEngine;
 
   void restart();
-  // void checkCollisions();
-  // void checkWinCondition();
+  void checkCollisions();
+  bool isPointInLine(glm::vec4 line, glm::vec2 point);
+  void checkWinCondition();
 };
 
 #endif
