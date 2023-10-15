@@ -1,11 +1,11 @@
-#ifndef CUBE_HPP_
-#define CUBE_HPP_
+#ifndef WALL_HPP_
+#define WALL_HPP_
 
 #include "abcgOpenGL.hpp"
 
 #include "gamedata.hpp"
 
-class Cube {
+class Wall {
 public:
   void create(GLuint program);
   void paint(GameData const &gameData);
@@ -14,10 +14,14 @@ public:
 
   glm::vec4 m_color{1};
   float m_rotation{};
-  float m_scale{0.1f};
+  float m_scale{0.5f};
   glm::vec2 m_translation{};
   glm::vec2 m_velocity{};
-  std::array<glm::vec2, 4> m_cubeSidePoints{};
+  std::array<glm::vec4, 29> m_wallArrays{};
+  std::array<glm::vec4, 3> m_winningArea{glm::vec4{1.0f, 0.33f, 1.2f, 0.33f},
+                                         glm::vec4{1.2f, 0.33f, 1.2f, 0.0f},
+                                         glm::vec4{1.2f, 0.0f, 1.0f, 0.0f}};
+
 
 private:
   GLuint m_program{};
