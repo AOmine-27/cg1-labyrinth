@@ -36,9 +36,9 @@ void Window::onCreate() {
 
   // Create program to render the other objects
   m_cube_program =
-      abcg::createOpenGLProgram({{.source = assetsPath + "cube.vert",
+      abcg::createOpenGLProgram({{.source = assetsPath + "laby.vert",
                                   .stage = abcg::ShaderStage::Vertex},
-                                 {.source = assetsPath + "cube.frag",
+                                 {.source = assetsPath + "laby.frag",
                                   .stage = abcg::ShaderStage::Fragment}});
 
   abcg::glClearColor(0, 0, 0, 1);
@@ -46,10 +46,6 @@ void Window::onCreate() {
 #if !defined(__EMSCRIPTEN__)
   abcg::glEnable(GL_PROGRAM_POINT_SIZE);
 #endif
-
-  // Start pseudo-random number generator
-  m_randomEngine.seed(
-      std::chrono::steady_clock::now().time_since_epoch().count());
 
   restart();
 }
@@ -76,6 +72,7 @@ void Window::onUpdate() {
     checkCollisions();
     checkWinCondition();
   }
+
   m_cube.update(m_gameData, deltaTime);
 }
 
@@ -118,12 +115,12 @@ void Window::onResize(glm::ivec2 const &size) {
 }
 
 void Window::onDestroy() {
-
-  // m_cube.destroy();
+  m_wall.destroy();
+  m_cube.destroy();
 }
 
 void Window::checkCollisions() {
-  for (int i = 0; i < m_cube.m_cubeSidePoints.size(); i++) {
+  for (auto i = 0; i < m_cube.m_cubeSidePoints.size(); i++) {
     auto cubeSidePoints = m_cube.m_cubeSidePoints[i];
 
     for (auto wall : m_wall.m_wallArrays) {

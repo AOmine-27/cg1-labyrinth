@@ -8,22 +8,12 @@ void Cube::create(GLuint program) {
 
   m_program = program;
 
-  // Get location of uniforms in the program
   m_colorLoc = abcg::glGetUniformLocation(m_program, "color");
   m_scaleLoc = abcg::glGetUniformLocation(m_program, "scale");
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
 
-  // Reset ship attributes
   m_translation = glm::vec2(-0.3, 0.5);
   m_velocity = glm::vec2(0);
-
-  // clang-format off
-  // m_cubeSidePoints = {
-  //     glm::vec2{0.0f, +1.0f}, 
-  //     glm::vec2{0.0f, 0.0f},
-  //     glm::vec2{+1.0f, +1.0f}, 
-  //     glm::vec2{+1.0f, 0.0f},
-  //     };
 
   m_cubeSidePoints = {
       glm::vec2{0.0f, +0.5f}, 
@@ -32,9 +22,7 @@ void Cube::create(GLuint program) {
       glm::vec2{+0.5f, 1.0f},
       };
 
-  // std::array const indices{ 0, 1, 2, 0, 2, 3, 1, 2, 3};
   std::array const indices{ 0, 1, 2, 0, 3, 2};
-  // clang-format on
 
   // Generate VBO
   abcg::glGenBuffers(1, &m_VBO);
