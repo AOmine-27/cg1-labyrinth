@@ -17,5 +17,5 @@ void main() {
 
   vec2 newPosition = rotated * scale + translation;
   gl_Position = vec4(newPosition, 0, 1);
-  fragColor = color;
+  fragColor = vec4(inPosition.x,inPosition.y,0.7,1.0);;
 }

@@ -36,9 +36,9 @@ void Window::onCreate() {
 
   // Create program to render the other objects
   m_cube_program =
-      abcg::createOpenGLProgram({{.source = assetsPath + "cube.vert",
+      abcg::createOpenGLProgram({{.source = assetsPath + "laby.vert",
                                   .stage = abcg::ShaderStage::Vertex},
-                                 {.source = assetsPath + "cube.frag",
+                                 {.source = assetsPath + "laby.frag",
                                   .stage = abcg::ShaderStage::Fragment}});
 
   abcg::glClearColor(0, 0, 0, 1);
