@@ -120,19 +120,24 @@ void Window::onDestroy() {
 }
 
 void Window::checkCollisions() {
+  m_gameData.m_collision = Collision::False;
+  m_gameData.m_collisionSide1 = 0;
+  m_gameData.m_collisionSide2 = 0;
   for (auto i : iter::range(m_cube.m_cubeSidePoints.size())) {
     auto cubeSidePoints = m_cube.m_cubeSidePoints[i];
 
     for (auto wall : m_wall.m_wallArrays) {
       if(isPointInLine((wall*m_wall.m_scale), (cubeSidePoints*m_cube.m_scale + m_cube.m_translation))) {
         m_gameData.m_collision = Collision::True;
-        m_gameData.m_collisionSide = i;
-
-        return;
+        if (m_gameData.m_collisionSide1 == 0)
+          m_gameData.m_collisionSide1 = i+1;
+        else 
+          m_gameData.m_collisionSide2 = i+1;
+        
       }
     }
   }
-  m_gameData.m_collision = Collision::False;
+  
 }
 
 bool Window::isPointInLine(glm::vec4 line, glm::vec2 point) { 

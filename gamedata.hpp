@@ -10,7 +10,8 @@ enum class Collision { True, False };
 struct GameData {
   State m_state{State::Playing};
   Collision m_collision{Collision::False};
-  int m_collisionSide{0};
+  int m_collisionSide1{0};
+  int m_collisionSide2{0};
   std::bitset<4> m_input;
 };
 

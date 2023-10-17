@@ -85,29 +85,31 @@ void Cube::destroy() {
 }
 
 void Cube::update(GameData const &gameData, float deltaTime) {
-  
+  auto vel{0.5f};
   // TODO: Check if hit borders/walls
   if (gameData.m_collision == Collision::True) {
-    auto side = gameData.m_collisionSide;
+    auto side1 = gameData.m_collisionSide1;
+    auto side2 = gameData.m_collisionSide2;
+    
 
-    if (gameData.m_input[gsl::narrow<size_t>(Input::Left)] && side != 0)
-      m_translation -= glm::vec2{0.2f, 0.0f} * deltaTime;
-    if (gameData.m_input[gsl::narrow<size_t>(Input::Right)]  && side != 2)
-      m_translation += glm::vec2{0.2f, 0.0f} * deltaTime;
-    if (gameData.m_input[gsl::narrow<size_t>(Input::Up)]  && side != 3)
-      m_translation += glm::vec2{0.0f, 0.2f} * deltaTime;
-    if (gameData.m_input[gsl::narrow<size_t>(Input::Down)]  && side != 1)
-      m_translation -= glm::vec2{0.0f, 0.2f} * deltaTime;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Left)] && (side1 != 1 && side2 != 1))
+      m_translation -= glm::vec2{0.2f, 0.0f} * deltaTime*vel;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Right)]  && (side1 != 3 && side2 != 3))
+      m_translation += glm::vec2{0.2f, 0.0f} * deltaTime*vel;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Up)]  && (side1 != 4 && side2 != 4))
+      m_translation += glm::vec2{0.0f, 0.2f} * deltaTime*vel;
+    if (gameData.m_input[gsl::narrow<size_t>(Input::Down)]  && (side1 != 2 && side2 != 2))
+      m_translation -= glm::vec2{0.0f, 0.2f} * deltaTime*vel;
 
   } else {
     if (gameData.m_input[gsl::narrow<size_t>(Input::Left)])
-      m_translation -= glm::vec2{0.2f, 0.0f} * deltaTime;
+      m_translation -= glm::vec2{0.2f, 0.0f} * deltaTime*vel;
     if (gameData.m_input[gsl::narrow<size_t>(Input::Right)])
-      m_translation += glm::vec2{0.2f, 0.0f} * deltaTime;
+      m_translation += glm::vec2{0.2f, 0.0f} * deltaTime*vel;
     if (gameData.m_input[gsl::narrow<size_t>(Input::Up)])
-      m_translation += glm::vec2{0.0f, 0.2f} * deltaTime;
+      m_translation += glm::vec2{0.0f, 0.2f} * deltaTime*vel;
     if (gameData.m_input[gsl::narrow<size_t>(Input::Down)])
-      m_translation -= glm::vec2{0.0f, 0.2f} * deltaTime;
+      m_translation -= glm::vec2{0.0f, 0.2f} * deltaTime*vel;
   }
 
 }
