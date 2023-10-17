@@ -120,7 +120,7 @@ void Window::onDestroy() {
 }
 
 void Window::checkCollisions() {
-  for (auto i = 0; i < m_cube.m_cubeSidePoints.size(); i++) {
+  for (auto i : iter::range(m_cube.m_cubeSidePoints.size())) {
     auto cubeSidePoints = m_cube.m_cubeSidePoints[i];
 
     for (auto wall : m_wall.m_wallArrays) {
@@ -154,7 +154,7 @@ bool Window::isPointInLine(glm::vec4 line, glm::vec2 point) {
 }
 
 void Window::checkWinCondition() {
-  for (int i = 0; i < m_cube.m_cubeSidePoints.size(); i++) {
+  for (int i : iter::range(m_cube.m_cubeSidePoints.size())) {
     auto cubeSidePoints = m_cube.m_cubeSidePoints[i];
 
     for (auto winningWall : m_wall.m_winningArea) {
