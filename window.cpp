@@ -155,7 +155,7 @@ bool Window::isPointInLine(glm::vec4 line, glm::vec2 point) {
   };
   auto const distanceDiff { (distLineStartPoint + distLineEndPoint) - lineLength};
 
-  return distanceDiff < 0.000001; 
+  return distanceDiff < 0.001; 
 }
 
 void Window::checkWinCondition() {
